@@ -38,6 +38,16 @@ fn loop_labels() {
     println!("End count = {count}");
 }
 
+fn while_loops() {
+    let mut number = 3;
+
+    while number != 0 {
+        println!("{number}");
+        number -= 1;
+    }
+    println!("Lift off!")
+}
+
 fn main() {
     let number = 3;
 
@@ -67,4 +77,6 @@ fn main() {
     count_20();
 
     loop_labels();
+
+    while_loops();
 }
