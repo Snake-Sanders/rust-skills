@@ -48,6 +48,16 @@ fn while_loops() {
     println!("Lift off!")
 }
 
+fn for_loops() {
+    println!{"For loop"}
+    
+    let a = [10, 20,30 ,40 , 50];
+
+    for element in a {
+        println!{"The value is {element}"}
+    }
+}
+
 fn main() {
     let number = 3;
 
@@ -79,4 +89,6 @@ fn main() {
     loop_labels();
 
     while_loops();
+
+    for_loops();
 }
