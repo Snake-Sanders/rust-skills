@@ -19,6 +19,23 @@ fn main() {
     let (s2, len) = calculate_length(greeting); // greeting is moved to func
     println!("The length of '{}' is {}.", s2, len);
 
+    // passing variable using reference. 
+    // The parameter `s` is a pointer to `saludo`
+    // and saludo points to "hola", located in the heap. 
+    // Important: `s` does NOT point to the value of `saludo` the heap!
+    let saludo = String::from("hola");
+    let saludo_len = calculate_length_with_reference(&saludo);
+    println!("Spanish greeting: {}, lenght {}", saludo, saludo_len);
+
+    // passing a mutable reference.
+    let mut halsning = String::from("Hej");
+    change_greeting(&mut halsning);
+    println!("Swedish greeting: {}", halsning);
+
+    // returning a string by value
+    let gruessen = get_gruessen();
+    println!("Austrian greeting: {}", gruessen);
+    
     println!("x last call {}", x);
     //println!("s last call {}", s); <- s
 
@@ -37,4 +54,19 @@ fn makes_copy(some_integer: i32) { // some_integer comes into scope
 fn calculate_length(s: String) -> (String, usize) {
     let length = s.len(); // len() returns the length of a String
     (s, length)
+}
+
+fn calculate_length_with_reference(s: &String) -> usize {
+    // s.push_str(", world"); cannot be changed, it is unmutable!
+    s.len()
+}
+
+fn change_greeting(s: &mut String) {
+    s.push_str(" Hej");
+}
+
+fn get_gruessen() -> String {
+    let s = String::from("Habediehre");
+    s 
+    // returns the value, do not return &s, s is dropped after this function.
 }
