@@ -1,3 +1,6 @@
+// create new:
+// cargo new <name>
+//
 // build with:
 // $ cargo build
 //
