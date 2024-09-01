@@ -10,7 +10,14 @@ fn main() {
     println!("Hello, what's your name?");
     let name = what_is_your_name();
 
-    if name == "dan" {
+    let visitors_list = ["sam", "dan", "fran"];
+    let mut allow_them_in = false;
+    for visitor in &visitors_list {
+        if name == *visitor {
+            allow_them_in = true;
+        }
+    }
+    if allow_them_in {
         println!("Welcome {}", name);
     } else {
         println!("Sorry, you are not in the list, {}", name);
