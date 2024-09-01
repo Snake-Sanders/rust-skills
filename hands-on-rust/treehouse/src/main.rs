@@ -9,5 +9,10 @@ fn what_is_your_name() -> String {
 fn main() {
     println!("Hello, what's your name?");
     let name = what_is_your_name();
-    println!("Hello {:?}", name);
+
+    if name == "dan" {
+        println!("Welcome {}", name);
+    } else {
+        println!("Sorry, you are not in the list, {}", name);
+    }
 }
