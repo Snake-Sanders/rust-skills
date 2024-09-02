@@ -26,8 +26,8 @@ fn what_is_your_name() -> String {
     name.trim().to_lowercase()
 }
 
-fn get_visitors_list() -> [Visitor; 3] {
-    return [
+fn get_visitors_list() -> Vec<Visitor> {
+    return vec![
         Visitor::new("sam", "Hi Sam, welcom back"),
         Visitor::new("dan", "Hey hey Dam, long time not see you"),
         Visitor::new("fran", "Hello sir, welcome."),
