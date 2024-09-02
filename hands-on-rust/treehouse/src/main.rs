@@ -1,5 +1,7 @@
 use std::io::stdin;
 
+// derivign Debug allows to print the whole structure with {:?}
+#[derive(Debug)]
 struct Visitor {
     name: String,
     greeting: String,
