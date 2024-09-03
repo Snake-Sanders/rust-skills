@@ -29,7 +29,7 @@ fn what_is_your_name() -> String {
 fn get_visitors_list() -> Vec<Visitor> {
     return vec![
         Visitor::new("sam", "Hi Sam, welcom back"),
-        Visitor::new("dan", "Hey hey Dam, long time not see you"),
+        Visitor::new("dan", "Hey hey Dam, long time no see you"),
         Visitor::new("fran", "Hello sir, welcome."),
     ];
 }
