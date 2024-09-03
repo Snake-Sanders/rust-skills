@@ -41,7 +41,7 @@ fn main() {
         println!(" (Leave empty and press ENTER to quit)");
         let name = what_is_your_name();
 
-        if name == "" {
+        if name.is_empty() {
             println!("Exit.");
             break;
         }
