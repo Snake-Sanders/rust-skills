@@ -42,7 +42,6 @@ fn main() {
         let name = what_is_your_name();
 
         if name.is_empty() {
-            println!("Exit.");
             break;
         }
 
@@ -57,5 +56,5 @@ fn main() {
     }
 
     println!("The final visitors list:");
-    println!("{:?}", visitors_list);
+    println!("{:#?}", visitors_list);
 }
