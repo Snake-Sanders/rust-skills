@@ -35,14 +35,24 @@ fn get_visitors_list() -> Vec<Visitor> {
 }
 
 fn main() {
-    println!("Hello, what's your name?");
-    let name = what_is_your_name();
+    let mut visitors_list = get_visitors_list();
+    loop {
+        print!("Hello, what's your name?");
+        println!(" (Leave empty and press ENTER to quit)");
+        let name = what_is_your_name();
 
-    //let visitors_list = ["sam", "dan", "fran"];
-    let visitors_list = get_visitors_list();
-    let known_visitor = visitors_list.iter().find(|visitor| visitor.name == name);
-    match known_visitor {
-        Some(visitor) => visitor.greet_visitor(),
-        None => println!("Sorry, you are not in the list, {}", name),
+        if name == "" {
+            println!("Exit.");
+            break;
+        }
+
+        let known_visitor = visitors_list.iter().find(|visitor| visitor.name == name);
+        match known_visitor {
+            Some(visitor) => visitor.greet_visitor(),
+            None => {
+                println!("{} is not in the visitor list", name);
+                visitors_list.push(Visitor::new(&name, "Hello, New friend"));
+            }
+        }
     }
 }
