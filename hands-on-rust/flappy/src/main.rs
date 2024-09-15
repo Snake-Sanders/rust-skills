@@ -60,9 +60,8 @@ impl Obstacle {
     }
 
     fn render(&mut self, ctx: &mut BTerm, player_x: i32) {
-        let half_gap = self.size / 2;
-        let gap_top = self.gap_y - half_gap;
-        let gap_bottom = self.gap_y + half_gap;
+        let gap_top = self.gap_top();
+        let gap_bottom = self.gap_bottom();
         // moves the wall relative to the player x position
         let x = self.x - player_x;
 
@@ -81,6 +80,24 @@ impl Obstacle {
         for y in gap_bottom..SCREEN_HEIGHT {
             ctx.set(x, y, YELLOW, BLACK, to_cp437('#'));
         }
+    }
+
+    fn hit_obsctale(&self, player: &Player) -> bool {
+        let player_at_wall = self.x == player.x;
+        let player_too_high = player.y >= self.gap_top();
+        let player_too_low = player.y <= self.gap_bottom();
+
+        player_at_wall && (player_too_high || player_too_low)
+    }
+
+    fn gap_top(&self) -> i32 {
+        let half_gap = self.size / 2;
+        self.gap_y - half_gap
+    }
+
+    fn gap_bottom(&self) -> i32 {
+        let half_gap = self.size / 2;
+        self.gap_y + half_gap
     }
 }
 
@@ -124,6 +141,10 @@ impl State {
 
         self.obstacle.render(ctx, self.player.x);
 
+        if self.player.x > self.obstacle.x {
+            self.obstacle = Obstacle::new(self.player.x + SCREEN_WIDTH, self.score);
+        }
+
         if self.frame_time > FRAME_DURATION {
             self.frame_time = 0.0;
             self.player.gravity_and_move();
@@ -136,7 +157,8 @@ impl State {
 
         self.player.render(ctx);
         ctx.print(0, 0, "Press SPACE to flap.");
-        if self.player.y > SCREEN_HEIGHT {
+
+        if self.player.y > SCREEN_HEIGHT || self.obstacle.hit_obsctale(&self.player) {
             self.mode = GameMode::End;
         }
     }
