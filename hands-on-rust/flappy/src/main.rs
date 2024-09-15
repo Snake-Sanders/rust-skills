@@ -61,14 +61,25 @@ impl Obstacle {
 
     fn render(&mut self, ctx: &mut BTerm, player_x: i32) {
         let half_gap = self.size / 2;
-        let gap_top = self.gap_y + half_gap;
-        let gap_bottom = self.gap_y - half_gap;
-        let x = self.x;
+        let gap_top = self.gap_y - half_gap;
+        let gap_bottom = self.gap_y + half_gap;
+        // moves the wall relative to the player x position
+        let x = self.x - player_x;
+
+        ctx.print(
+            0,
+            1,
+            &format!(
+                "top: {}, bottom: {}, size: {}",
+                gap_top, gap_bottom, self.size
+            ),
+        );
+
         for y in 0..gap_top {
-            ctx.set(x, y, RED, BLACK, to_cp437('#'));
+            ctx.set(x, y, YELLOW1, BLACK, to_cp437('#'));
         }
         for y in gap_bottom..SCREEN_HEIGHT {
-            ctx.set(x, y, RED, BLACK, to_cp437('#'));
+            ctx.set(x, y, YELLOW, BLACK, to_cp437('#'));
         }
     }
 }
