@@ -75,8 +75,8 @@ impl Obstacle {
 
     fn hit_obsctale(&self, player: &Player) -> bool {
         let player_at_wall = self.x == player.x;
-        let player_too_high = player.y >= self.gap_top();
-        let player_too_low = player.y <= self.gap_bottom();
+        let player_too_high = Obstacle::is_y_above(player.y, self.gap_top());
+        let player_too_low = Obstacle::is_y_below(player.y, self.gap_bottom());
 
         player_at_wall && (player_too_high || player_too_low)
     }
@@ -89,6 +89,14 @@ impl Obstacle {
     fn gap_bottom(&self) -> i32 {
         let half_gap = self.size / 2;
         self.gap_y + half_gap
+    }
+
+    fn is_y_above(y: i32, y_limit: i32) -> bool {
+        // the lower the value of Y, the higher the position on the screen
+        y < y_limit
+    }
+    fn is_y_below(y: i32, y_limit: i32) -> bool {
+        y > y_limit
     }
 }
 
