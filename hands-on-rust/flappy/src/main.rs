@@ -65,15 +65,6 @@ impl Obstacle {
         // moves the wall relative to the player x position
         let x = self.x - player_x;
 
-        ctx.print(
-            0,
-            1,
-            &format!(
-                "top: {}, bottom: {}, size: {}",
-                gap_top, gap_bottom, self.size
-            ),
-        );
-
         for y in 0..gap_top {
             ctx.set(x, y, YELLOW1, BLACK, to_cp437('#'));
         }
