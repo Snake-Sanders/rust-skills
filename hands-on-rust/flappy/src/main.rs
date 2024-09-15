@@ -142,6 +142,7 @@ impl State {
 
         if self.player.x > self.obstacle.x {
             self.obstacle = Obstacle::new(self.player.x + SCREEN_WIDTH, self.score);
+            self.score += 1;
         }
 
         if self.frame_time > FRAME_DURATION {
@@ -156,6 +157,7 @@ impl State {
 
         self.player.render(ctx);
         ctx.print(0, 0, "Press SPACE to flap.");
+        ctx.print(0, 1, &format!("Score {}", self.score));
 
         if self.player.y > SCREEN_HEIGHT || self.obstacle.hit_obsctale(&self.player) {
             self.mode = GameMode::End;
