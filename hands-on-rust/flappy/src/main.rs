@@ -6,8 +6,8 @@ enum GameMode {
     End,
 }
 
-const SCREEN_WIDT: i32 = 80;
-const SCREEN_HEITH: i32 = 50;
+const SCREEN_WIDTH: i32 = 80;
+const SCREEN_HEIGHT: i32 = 50;
 const FRAME_DURATION: f32 = 75.0;
 
 struct Player {
@@ -45,10 +45,40 @@ impl Player {
     }
 }
 
+struct Obstacle {
+    x: i32,
+    gap_y: i32, // the y center of the gap
+    size: i32,  // the size of the gap
+}
+
+impl Obstacle {
+    fn new(x: i32, score: i32) -> Self {
+        let mut random = RandomNumberGenerator::new();
+        let gap_y = random.range(10, 40);
+        let size = i32::max(2, 20 - score);
+        Obstacle { x, gap_y, size }
+    }
+
+    fn render(&mut self, ctx: &mut BTerm, player_x: i32) {
+        let half_gap = self.size / 2;
+        let gap_top = self.gap_y + half_gap;
+        let gap_bottom = self.gap_y - half_gap;
+        let x = self.x;
+        for y in 0..gap_top {
+            ctx.set(x, y, RED, BLACK, to_cp437('#'));
+        }
+        for y in gap_bottom..SCREEN_HEIGHT {
+            ctx.set(x, y, RED, BLACK, to_cp437('#'));
+        }
+    }
+}
+
 struct State {
     player: Player,
     frame_time: f32,
+    obstacle: Obstacle,
     mode: GameMode,
+    score: i32,
 }
 
 impl State {
@@ -56,7 +86,9 @@ impl State {
         State {
             player: Player::new(5, 25),
             frame_time: 0.0,
+            obstacle: Obstacle::new(SCREEN_WIDTH, 0),
             mode: GameMode::Menu,
+            score: 0,
         }
     }
 
@@ -79,6 +111,8 @@ impl State {
         ctx.cls_bg(NAVY);
         self.frame_time += ctx.frame_time_ms;
 
+        self.obstacle.render(ctx, self.player.x);
+
         if self.frame_time > FRAME_DURATION {
             self.frame_time = 0.0;
             self.player.gravity_and_move();
@@ -91,7 +125,7 @@ impl State {
 
         self.player.render(ctx);
         ctx.print(0, 0, "Press SPACE to flap.");
-        if self.player.y > SCREEN_HEITH {
+        if self.player.y > SCREEN_HEIGHT {
             self.mode = GameMode::End;
         }
     }
