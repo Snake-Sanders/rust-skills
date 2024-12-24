@@ -1,4 +1,8 @@
-# Embedded Rust
+# Embedded Rust: The embedonomicon
+
+The subfolders contain the exercises of the book `The embedonomicon`.
+
+https://docs.rust-embedded.org/embedonomicon/index.html
 
 ## Debug commands
 
