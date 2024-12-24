@@ -39,6 +39,9 @@ qemu-system-i386         qemu-system-riscv32
 
 1. Launch qemu emulator on a different terminal
 
+This command will create a virtual microcontroller and run our application.
+It will simulate a connection to TCP port 3333.
+
 ```
 qemu-system-arm \
       -cpu cortex-m3 \
@@ -51,7 +54,13 @@ qemu-system-arm \
 
 2. Open a debug session using `arm-none-eabi-dbg`.
 
-To execute this tool make sure the path of ARM toolkit is imported.
-See or run `source .env`.
+To run this tool, ensure the ARM toolkit path is sourced.
+
+`source .env`
+
+This command connects to TCP port 3333, opening a debug session with 
+QEMU (the emulator). 
+
+QEMU runs our code, allowing step-by-step debugging through this connection.
 
 `arm-none-eabi-gdb -q target/thumbv7m-none-eabi/debug/app`
