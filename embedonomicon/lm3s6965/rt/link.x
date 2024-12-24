@@ -29,14 +29,17 @@ SECTIONS
   } > FLASH
 
   /* The linker will place .text after the previous output 
-  section: .vector_table */
+  section which is .vector_table */
+
+  /* Code: located in ROM */
   .text :
   {
     *(.text .text.*);
   } > FLASH
 
   /* Read-Only Data:
-  Constant data (e.g., string literals, const variables). */
+  Constant data (e.g., string literals, const variables).
+  */
   .rodata :
   {
     *(.rodata .rodata.*);
@@ -50,8 +53,12 @@ SECTIONS
     *(.bss .bss.*);
   } > RAM
 
-  /* Initialized global/static variables */
-  .data :
+  /* Initialized global/static variables 
+  The AT() address is where the initialization values for static
+  variables are stored, in LMA in ROM. Later these values are used tp set
+  the static variables in RAM.
+  */
+  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
   {
     *(.data .data.*);
   } > RAM
