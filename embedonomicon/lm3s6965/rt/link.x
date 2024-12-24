@@ -35,6 +35,27 @@ SECTIONS
     *(.text .text.*);
   } > FLASH
 
+  /* Read-Only Data:
+  Constant data (e.g., string literals, const variables). */
+  .rodata :
+  {
+    *(.rodata .rodata.*);
+  } > FLASH
+
+  /* Block Started by Symbol
+  Uninitialized global/static variables (static mut, let mut)
+  */
+  .bss :
+  {
+    *(.bss .bss.*);
+  } > RAM
+
+  /* Initialized global/static variables */
+  .data :
+  {
+    *(.data .data.*);
+  } > RAM
+
   /* These sections are for stack trace when an exception occurs,  
   but stack unwinding on panics is not configured.
   */
