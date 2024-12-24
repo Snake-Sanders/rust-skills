@@ -1,10 +1,11 @@
 #![no_std]
 #![no_main]
 
-extern crate rt;
+use rt::entry;
 
-#[no_mangle]
-pub fn main() -> ! {
+entry!(main);
+
+fn main() -> ! {
     let _x = 42;
 
     loop {}
