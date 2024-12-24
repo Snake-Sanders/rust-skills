@@ -50,7 +50,11 @@ SECTIONS
   */
   .bss :
   {
+    /* _sbss is the start address of bss */
+    _sbss = .;
     *(.bss .bss.*);
+    _ebss = .;
+    /* _ebss is the end address of bss */
   } > RAM
 
   /* Initialized global/static variables 
@@ -60,8 +64,13 @@ SECTIONS
   */
   .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
   {
+    _sdata = .;
     *(.data .data.*);
+    _edata = .;
   } > RAM
+
+  /* associate a symbol to the LMA to .data */
+  _sidata = LOADADDR(.data);
 
   /* These sections are for stack trace when an exception occurs,  
   but stack unwinding on panics is not configured.
