@@ -34,3 +34,24 @@ qemu-system-avr          qemu-system-ppc          qemu-system-xtensa
 qemu-system-hppa         qemu-system-ppc64        qemu-system-xtensaeb
 qemu-system-i386         qemu-system-riscv32
 ```
+
+## Debug 
+
+1. Launch qemu emulator on a different terminal
+
+```
+qemu-system-arm \
+      -cpu cortex-m3 \
+      -machine lm3s6965evb \
+      -gdb tcp::3333 \
+      -S \
+      -nographic \
+      -kernel target/thumbv7m-none-eabi/debug/app
+```
+
+2. Open a debug session using `arm-none-eabi-dbg`.
+
+To execute this tool make sure the path of ARM toolkit is imported.
+See or run `source .env`.
+
+`arm-none-eabi-gdb -q target/thumbv7m-none-eabi/debug/app`
