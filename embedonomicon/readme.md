@@ -56,4 +56,31 @@ Contents of section .text:
 
 `cargo objdump --bin app -- -s --section .bss`
 
+Inspect symbols
 
+`cargo nm` does not find ARM toolchain, but calling directly the tool 
+`arm-none-eabi-nm` works
+
+```
+arm-none-eabi-nm -jBC target/thumbv7m-none-eabi/debug/deps/app-6d6232af9c6ab892
+
+0000065c r .L__unnamed_1
+...
+00000004 R RESET_VECTOR
+0000004e T ResetHandler
+00000426 t compiler_builtins::mem::memcpy
+20000000 b app::BSS
+20000002 d app::DATA
+00000008 t app::main
+0000060c r app::RODATA
+...
+0000056e t __aeabi_memclr
+00000422 t __aeabi_memcpy
+20000001 B _ebss
+20000004 D _edata
+20000000 B _sbss
+20000002 D _sdata
+000008dc A _sidata
+00000032 T main
+00000046 T rust_begin_unwind
+```
