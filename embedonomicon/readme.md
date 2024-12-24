@@ -4,6 +4,22 @@ The subfolders contain the exercises of the book `The embedonomicon`.
 
 https://docs.rust-embedded.org/embedonomicon/index.html
 
+## Targets 
+
+to see rust supported targets run:
+
+`rustc --print=target-list | fzf`
+
+to see the installed targets run:
+
+```
+rustup target list | grep installed
+
+aarch64-apple-darwin (installed)
+thumbv6m-none-eabi (installed)
+thumbv7m-none-eabi (installed)
+```
+
 ## Debug commands
 
 * show all the symbols
