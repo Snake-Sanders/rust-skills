@@ -22,6 +22,30 @@ thumbv7m-none-eabi (installed)
 
 ## Debug commands
 
+there are two scripts to start QEMU and the debugger.
+
+1. `./start_qemu.sh` 
+2. `./start_dbg.sh`
+
+To stop QEMU you need to kill the process.
+
+1. find the process listening on the port 
+
+```
+lsof -i :3333
+
+qemu-system  12345 user  ...  TCP *:3333
+
+```
+
+1. kill the process
+
+```
+kill 12345
+```
+
+## Object dump 
+
 * show all the symbols
 
 `cargo objdump --bin app -- -s`
