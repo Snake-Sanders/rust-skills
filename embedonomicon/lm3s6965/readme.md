@@ -64,3 +64,32 @@ QEMU (the emulator).
 QEMU runs our code, allowing step-by-step debugging through this connection.
 
 `arm-none-eabi-gdb -q target/thumbv7m-none-eabi/debug/app`
+
+## app + rt
+
+the original project was converted from app to rt (runtime library)
+
+now the app project uses the layout defined in rt, and the object 
+dump shows the `main ` and the `ResetHandler` function
+
+example:
+
+```
+cargo objdump --bin app -- -d --no-show-raw-insn
+
+app:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+00000008 <main>:
+       8:      	sub	sp, #0x4
+       a:      	movs	r0, #0x2a
+       c:      	str	r0, [sp]
+       e:      	b	0x10 <main+0x8>         @ imm = #-0x2
+      10:      	b	0x10 <main+0x8>         @ imm = #-0x4
+
+00000012 <ResetHandler>:
+      12:      	push	{r7, lr}
+      14:      	mov	r7, sp
+      16:      	bl	0x8 <main>              @ imm = #-0x12
+```
