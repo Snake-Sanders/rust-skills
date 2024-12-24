@@ -15,7 +15,7 @@ SECTIONS
 {
   .vector_table ORIGIN(FLASH) :
   {
-    /* First entry: 
+    /* 1st entry: 
     Initial Stack Pointer value.
     By allocating the stack from the top of the address space 
     and growing it downwards, the heap (dynamic memory allocation)
@@ -23,9 +23,12 @@ SECTIONS
     */
     LONG(ORIGIN(RAM) + LENGTH(RAM));
 
-    /* Second entry: 
+    /* 2nd entry: 
     Reset vector initialized poiting to ResetHandler() */
     KEEP(*(.vector_table.reset_vector));
+
+    /* 3rd .. 16th (14) entries: */
+    KEEP(*(.vector_table.exceptions));
   } > FLASH
 
   /* The linker will place .text after the previous output 
@@ -80,3 +83,15 @@ SECTIONS
     *(.ARM.exidx .ARM.exidx.*);
   }
 }
+
+// in case these functions are not defined a default 
+// handler is assigned 
+PROVIDE(NMI = DefaultExceptionHandler);
+PROVIDE(HardFault = DefaultExceptionHandler);
+PROVIDE(MemManage = DefaultExceptionHandler);
+PROVIDE(BusFault = DefaultExceptionHandler);
+PROVIDE(UsageFault = DefaultExceptionHandler);
+PROVIDE(SVCall = DefaultExceptionHandler);
+PROVIDE(PendSV = DefaultExceptionHandler);
+PROVIDE(SysTick = DefaultExceptionHandler);
+
