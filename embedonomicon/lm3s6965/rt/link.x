@@ -84,8 +84,8 @@ SECTIONS
   }
 }
 
-// in case these functions are not defined a default 
-// handler is assigned 
+/* in case these functions are not defined a default 
+ handler is assigned */
 PROVIDE(NMI = DefaultExceptionHandler);
 PROVIDE(HardFault = DefaultExceptionHandler);
 PROVIDE(MemManage = DefaultExceptionHandler);
