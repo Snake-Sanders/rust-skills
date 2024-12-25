@@ -20,15 +20,26 @@ pub unsafe extern "C" fn ResetHandler() -> ! {
         static _sidata: u8;
     }
 
-    // calculates the size of bss section
-    let count = &raw const _ebss as *const u8 as usize - &raw const _sbss as *const u8 as usize;
-    // set memory to zero
-    ptr::write_bytes(&raw mut _sbss as *mut u8, 0, count);
+    // dbg
+    //
+    unsafe {
+        /*
+        // bss is initialized by the liner with NOLOAD
+        let sbss = &_sbss as *const u8 as usize;
+        let ebss = &_ebss as *const u8 as usize;
+        let bss_size = sbss - ebss;
+        // set memory to zero
+        ptr::write_bytes(&raw mut _sbss as *mut u8, 0, bss_size);
+        */
 
-    // calculates the size of data section
-    let count = &raw const _edata as *const u8 as usize - &raw const _sdata as *const u8 as usize;
-    // initializes the symbols in data
-    ptr::copy_nonoverlapping(&_sidata as *const u8, &raw mut _sdata as *mut u8, count);
+        let data_addr = &raw mut _sdata as *mut u8;
+        let sdata = &raw const _sdata as *const u8 as usize;
+        let edata = &raw const _edata as *const u8 as usize;
+        let sidata = &_sidata as *const u8;
+
+        let data_size = edata - sdata;
+        //ptr::copy_nonoverlapping(sidata, data_addr, data_size);
+    }
 
     extern "Rust" {
         fn main() -> !;
