@@ -134,9 +134,48 @@ arm-none-eabi-nm -jBC target/thumbv7m-none-eabi/debug/deps/app-6d6232af9c6ab892
 **VMA Virtual Memory Address**
 
 This is where the section will reside in RAM during execution.
-For .data, the VMA is in RAM because these are variables that can be modified at runtime.
+For `.data`, the VMA is in RAM because these are variables that can be modified at runtime.
 
 **LMA Load Memory Address**
 
 This is where the section is stored initially in FLASH.
-For .data, the initial values must live in non-volatile memory (like FLASH) until copied to RAM during startup.
+For `.data`, the initial values must live in non-volatile memory (like FLASH) until copied to RAM during startup.
+
+`.data` exists in both FLASH and RAM:
+
+In FLASH, it holds initial values.
+In RAM, it holds live mutable variables during runtime.
+
+## Copy data
+
+On startup, the boot code copies from `.data ` its LMA (in FLASH) to its VMA (in RAM).
+This way, global/static variables start with the correct values.
+
+## Zeroed BSS
+
+`.bss ` holds variables initialized to zero. 
+These don't need space in FLASH; they are just zeroed out in RAM at startup.
+
+## Boot sequence
+
+1. CPU starts execution from the reset vector (in FLASH).
+2. Startup code copies .data from FLASH (LMA) to RAM (VMA).
+3. .bss is zeroed out.
+4. Main application starts.
+
+## Layout example
+
+```
+[ FLASH Layout ]
+0x0000_0000 : .text  (code)
+0x0000_0500 : .rodata (const data)
+0x0000_0700 : .data (initial values for RAM)
+```
+
+after boot
+```
+[ RAM Layout ]
+0x2000_0000 : .bss (zero-initialized)
+0x2000_0010 : .data (copied from FLASH)
+```
+
