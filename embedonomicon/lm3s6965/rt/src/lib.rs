@@ -32,13 +32,14 @@ pub unsafe extern "C" fn ResetHandler() -> ! {
         ptr::write_bytes(&raw mut _sbss as *mut u8, 0, bss_size);
         */
 
-        let data_addr = &raw mut _sdata as *mut u8;
+        //let data_addr = &raw mut _sdata as *mut u8;
+        //let sidata = &_sidata as *const u8;
         let sdata = &raw const _sdata as *const u8 as usize;
         let edata = &raw const _edata as *const u8 as usize;
-        let sidata = &_sidata as *const u8;
 
         let data_size = edata - sdata;
-        ptr::copy_nonoverlapping(sidata, data_addr, data_size);
+        //ptr::copy_nonoverlapping(sidata, data_addr, data_size);
+        ptr::copy_nonoverlapping(&_sidata as *const u8, &mut _sdata as *mut u8, data_size);
     }
 
     extern "Rust" {
