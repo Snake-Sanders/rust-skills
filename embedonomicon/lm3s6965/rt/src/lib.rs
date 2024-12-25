@@ -38,7 +38,7 @@ pub unsafe extern "C" fn ResetHandler() -> ! {
         let sidata = &_sidata as *const u8;
 
         let data_size = edata - sdata;
-        //ptr::copy_nonoverlapping(sidata, data_addr, data_size);
+        ptr::copy_nonoverlapping(sidata, data_addr, data_size);
     }
 
     extern "Rust" {

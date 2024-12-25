@@ -151,6 +151,32 @@ In RAM, it holds live mutable variables during runtime.
 On startup, the boot code copies from `.data ` its LMA (in FLASH) to its VMA (in RAM).
 This way, global/static variables start with the correct values.
 
+This is the order of the memory sections in flash.
+```
+[ .text | .rodata | .data ]  --> FLASH
+         ^         ^
+    _srodata   _sidata
+
+```
+
+`_sidata` points to `.data` address in flash, this is where the static symbols
+are copied from ROM.
+
+On the object dump `_sdata` refers to RAM address.
+
+```
+00000040 T _stext
+00000072 T main
+000004c8 R _srodata
+000004c8 T _etext
+00000728 A _sidata
+00000728 R _erodata
+20000000 B _sbss
+20000004 B _ebss
+20000004 D _sdata
+20000008 D _edata
+```
+
 ## Zeroed BSS
 
 `.bss ` holds variables initialized to zero. 
