@@ -128,3 +128,15 @@ arm-none-eabi-nm -jBC target/thumbv7m-none-eabi/debug/deps/app-6d6232af9c6ab892
 00000032 T main
 00000046 T rust_begin_unwind
 ```
+
+## VMA vs LMA
+
+**VMA Virtual Memory Address**
+
+This is where the section will reside in RAM during execution.
+For .data, the VMA is in RAM because these are variables that can be modified at runtime.
+
+**LMA Load Memory Address**
+
+This is where the section is stored initially in FLASH.
+For .data, the initial values must live in non-volatile memory (like FLASH) until copied to RAM during startup.
