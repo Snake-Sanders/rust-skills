@@ -44,6 +44,20 @@ qemu-system  12345 user  ...  TCP *:3333
 kill 12345
 ```
 
+### Inspecting memory 
+
+Example to inspect the address `0x0000_0728` and show it in hex
+While in dbg type `x/16bx <address>` 
+
+```
+x/16bx 0x728
+
+0x728 <_ZN4core3num7flt2dec8strategy6dragon15format_shortest17h53397f1da1956ed0E+1832>:	
+0x01	0x00	0x00	0x00	0x00	0x00	0x00	0x00
+```
+### next step
+
+you can use `next` or `stepi`, the later is for more granularity
 ## Object dump 
 
 * show all the symbols
@@ -177,6 +191,13 @@ On the object dump `_sdata` refers to RAM address.
 20000008 D _edata
 ```
 
+Example:
+
+```rust
+// copy_nonoverlapping(0x00000728, 0x20000004, 4);
+ptr::copy_nonoverlapping(sidata, data_addr, data_size);
+````
+
 ## Zeroed BSS
 
 `.bss ` holds variables initialized to zero. 
@@ -203,5 +224,19 @@ after boot
 [ RAM Layout ]
 0x2000_0000 : .bss (zero-initialized)
 0x2000_0010 : .data (copied from FLASH)
+```
+
+```
+cargo objdump --bin app -- --section-headers
+
+Sections:
+Idx Name            Size     VMA      LMA      Type
+  0                 00000000 00000000 00000000
+  1 .vector_table   00000040 00000000 00000000 DATA
+  2 .text           00000488 00000040 00000040 TEXT
+  3 .rodata         00000260 000004c8 000004c8 DATA
+  4 .bss            00000004 20000000 20000000 BSS
+  5 .data           00000004 20000004 00000728 DATA
+  ...
 ```
 
