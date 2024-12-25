@@ -83,9 +83,6 @@ SECTIONS
     _edata = .;
   } > RAM
 
-  /* associate a symbol to the LMA to .data */
-  _sidata = LOADADDR(.data);
-
   /* These sections are for stack trace when an exception occurs,  
   but stack unwinding on panics is not configured.
   */
@@ -94,6 +91,9 @@ SECTIONS
     *(.ARM.exidx .ARM.exidx.*);
   }
 }
+  /* associate a symbol to the LMA to .data */
+PROVIDE(_sidata = LOADADDR(.data));
+
 
 /* in case these functions are not defined a default 
  handler is assigned */
