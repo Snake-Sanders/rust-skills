@@ -37,8 +37,10 @@ SECTIONS
   /* Code: located in ROM */
   .text :
   {
+    _stext = .;
     *(.text .text.*)
     . = ALIGN(4); 
+    _etext = .;
   } > FLASH
 
   /* Read-Only Data:
@@ -46,8 +48,11 @@ SECTIONS
   */
   .rodata :
   {
+
+    _srodata = .;
     *(.rodata .rodata.*)
     . = ALIGN(4); 
+    _erodata = .;
   } > FLASH
 
   /* Block Started by Symbol
