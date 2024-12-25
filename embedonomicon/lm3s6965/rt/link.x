@@ -57,7 +57,7 @@ SECTIONS
 
   /* Block Started by Symbol
   Uninitialized global/static variables (static mut, let mut)
-  The .bss section is not loaded from the binary; it's initialized to zero 
+  With NOLOAD the .bss section is not loaded from the binary; it's initialized to zero 
   at runtime.
   */
   .bss (NOLOAD):
@@ -75,7 +75,7 @@ SECTIONS
   variables are stored, in LMA in ROM. Later these values are used tp set
   the static variables in RAM.
   */
-  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
+  .data : AT(ADDR(.bss) + SIZEOF(.bss))
   {
     _sdata = .;
     *(.data .data.*)
