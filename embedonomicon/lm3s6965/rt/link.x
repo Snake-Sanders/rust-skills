@@ -37,7 +37,8 @@ SECTIONS
   /* Code: located in ROM */
   .text :
   {
-    *(.text .text.*);
+    *(.text .text.*)
+    . = ALIGN(4); 
   } > FLASH
 
   /* Read-Only Data:
@@ -45,7 +46,8 @@ SECTIONS
   */
   .rodata :
   {
-    *(.rodata .rodata.*);
+    *(.rodata .rodata.*)
+    . = ALIGN(4); 
   } > FLASH
 
   /* Block Started by Symbol
@@ -55,7 +57,8 @@ SECTIONS
   {
     /* _sbss is the start address of bss */
     _sbss = .;
-    *(.bss .bss.*);
+    *(.bss .bss.*)
+    . = ALIGN(4); 
     _ebss = .;
     /* _ebss is the end address of bss */
   } > RAM
@@ -68,7 +71,8 @@ SECTIONS
   .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
   {
     _sdata = .;
-    *(.data .data.*);
+    *(.data .data.*)
+    . = ALIGN(4); 
     _edata = .;
   } > RAM
 
