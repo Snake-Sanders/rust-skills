@@ -71,11 +71,11 @@ SECTIONS
   } > RAM
 
   /* Initialized global/static variables 
-  The AT() address is where the initialization values for static
-  variables are stored, in LMA in ROM. Later these values are used tp set
-  the static variables in RAM.
+  The AT(LMA) is the Load Memory Address in ROM. It is where the initialization 
+  values for static variables are stored and loaded from at boot. 
+  Later these values are used to set the static variables in `> RAM`.
   */
-  .data : AT(ADDR(.bss) + SIZEOF(.bss))
+  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
   {
     _sdata = .;
     *(.data .data.*)
