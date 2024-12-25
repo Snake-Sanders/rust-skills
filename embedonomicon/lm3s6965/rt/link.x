@@ -52,8 +52,10 @@ SECTIONS
 
   /* Block Started by Symbol
   Uninitialized global/static variables (static mut, let mut)
+  The .bss section is not loaded from the binary; it's initialized to zero 
+  at runtime.
   */
-  .bss :
+  .bss (NOLOAD):
   {
     /* _sbss is the start address of bss */
     _sbss = .;
