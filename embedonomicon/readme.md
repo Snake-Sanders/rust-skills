@@ -58,19 +58,51 @@ x/16bx 0x728
 ### next step
 
 you can use `next` or `stepi`, the later is for more granularity
-## Object dump 
+
+## Disassembly: Object dump 
+
+* check build size
+
+```sh
+cargo size --target thumbv7m-none-eabi --bin app
+
+   text	   data	    bss	    dec	    hex	filename
+      0	      0	      0	      0	      0	app
+```
+
+* check object befor linking 
+
+```sh
+cargo rustc --target thumbv7m-none-eabi -- --emit=obj
+arm-none-eabi-nm -jBC target/thumbv7m-none-eabi/debug/deps/app-*.o
+
+00000000 T rust_begin_unwind
+```
 
 * show all the symbols
 
 `cargo objdump --bin app -- -s`
 
-* shows functions and variables in asm
+* shows the .text sections 
 
-`cargo objdump --bin app -- -d --no-show-raw-insn`
+```sh 
+cargo objdump --bin app -- -d --no-show-raw-insn
+
+app:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+00000008 <Reset>:
+       8:      	sub	sp, #0x4
+       a:      	movs	r0, #0x2a
+       c:      	str	r0, [sp]
+       e:      	b	0x10 <Reset+0x8>        @ imm = #-0x2
+      10:      	b	0x10 <Reset+0x8>        @ imm = #-0x4
+```
 
 * shows headers
 
-```
+``` sh
 cargo objdump --bin app -- --section-headers
 
 Sections:
@@ -84,14 +116,20 @@ Idx Name            Size     VMA      Type
 ```
 * shows sections
 
-```
+```sh
 cargo objdump --bin app -- -s --section .vector_table
 
 Contents of section .vector_table:
- 0000 00000120 47000000
+ 0000 00000120 09000000
 ```
 
-```
+- `00000120` is `0x2001_0000` the stack pointer 
+(highest address of RAM section)
+- `09000000` where `0x9` is thumb mode of the Reset handler.
+When a function is to be executed in thumb mode 
+the first bit of its address is set to 1.
+
+```sh
 cargo objdump --bin app -- -s --section .data
 
 Contents of section .data:
@@ -101,7 +139,7 @@ Contents of section .data:
 Note: from the headers table `.text` starts at 
 address `00000008 TEXT`
 
-```
+```sh
 cargo objdump --bin app -- -s --section .text
 
 Contents of section .text:
