@@ -1,6 +1,4 @@
 [package]
-## Wokwi: HW Emulator
-
 name = "rt"
 version = "0.1.0"
 edition = "2018"

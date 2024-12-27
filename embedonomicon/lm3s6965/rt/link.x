@@ -1,102 +1,63 @@
 /* Memory layout of the LM3S6965 microcontroller */
-/* 1K = 1 KiBi = 1024 bytes */ 
-
+/* 1K = 1 KiBi = 1024 bytes */
 MEMORY
 {
-  FLASH : ORIGIN = 0x00000000 , LENGTH = 256K
-  RAM : ORIGIN = 0x20000000 , LENGTH = 64K
+  FLASH : ORIGIN = 0x00000000, LENGTH = 256K
+  RAM : ORIGIN = 0x20000000, LENGTH = 64K
 }
 
 /* The entry point is the reset handler */
-ENTRY(ResetHandler);
+ENTRY(Reset);
+
 EXTERN(RESET_VECTOR);
+EXTERN(EXCEPTIONS);
 
 SECTIONS
 {
   .vector_table ORIGIN(FLASH) :
   {
-    /* 1st entry: 
-    Initial Stack Pointer value.
-    By allocating the stack from the top of the address space 
-    and growing it downwards, the heap (dynamic memory allocation)
-    could grow upwards without conflicting with the stack.
-    */
+    /* First entry: initial Stack Pointer value */
     LONG(ORIGIN(RAM) + LENGTH(RAM));
 
-    /* 2nd entry: 
-    Reset vector initialized poiting to ResetHandler() */
+    /* Second entry: reset vector */
     KEEP(*(.vector_table.reset_vector));
 
-    /* 3rd .. 16th (14) entries: */
+    /* The next 14 entries are exception vectors */
     KEEP(*(.vector_table.exceptions));
   } > FLASH
 
-  /* The linker will place .text after the previous output 
-  section which is .vector_table */
-
-  /* Code: located in ROM */
   .text :
   {
-    _stext = .;
-    *(.text .text.*)
-    . = ALIGN(4); 
-    _etext = .;
+    *(.text .text.*);
   } > FLASH
 
-  /* Read-Only Data:
-  Constant data (e.g., string literals, const variables).
-  */
   .rodata :
   {
-
-    _srodata = .;
-    *(.rodata .rodata.*)
-    . = ALIGN(4); 
-    _erodata = .;
+    *(.rodata .rodata.*);
   } > FLASH
 
-  /* Block Started by Symbol
-  Uninitialized global/static variables (static mut, let mut)
-  With NOLOAD the .bss section is not loaded from the binary; it's initialized to zero 
-  at runtime.
-  */
-  .bss (NOLOAD):
+  .bss :
   {
-    /* _sbss is the start address of bss */
     _sbss = .;
-    *(.bss .bss.*)
-    . = ALIGN(4); 
+    *(.bss .bss.*);
     _ebss = .;
-    /* _ebss is the end address of bss */
   } > RAM
 
-  /* Initialized global/static variables 
-  The AT(LMA) is the Load Memory Address in ROM. It is where the initialization 
-  values for static variables are stored and loaded from at boot. 
-  Later these values are used to set the static variables in `> RAM`.
-  */
-  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
+ .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
   {
     _sdata = .;
-    *(.data .data.*)
-    . = ALIGN(4); 
+    *(.data .data.*);
     _edata = .;
   } > RAM
 
-  /* These sections are for stack trace when an exception occurs,  
-  but stack unwinding on panics is not configured.
-  */
+  _sidata = LOADADDR(.data);
+
   /DISCARD/ :
   {
     *(.ARM.exidx .ARM.exidx.*);
   }
 }
-  /* associate a symbol to the LMA to .data */
-PROVIDE(_sidata = LOADADDR(.data));
 
-
-/* in case these functions are not defined a default 
- handler is assigned */
 PROVIDE(NMI = DefaultExceptionHandler);
 PROVIDE(HardFault = DefaultExceptionHandler);
 PROVIDE(MemManage = DefaultExceptionHandler);
