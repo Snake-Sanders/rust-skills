@@ -1,3 +1,5 @@
+// This is an app example of logging
+//
 // to see the log strings and their addresses
 // > cargo objdump --bin logger -- -t | grep '\.log'
 //
