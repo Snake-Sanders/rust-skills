@@ -1,4 +1,4 @@
-echo "starting simulation"
+echo "starting simulation or use <cargo run --release>"
 
 qemu-system-arm \
       -cpu cortex-m3 \
