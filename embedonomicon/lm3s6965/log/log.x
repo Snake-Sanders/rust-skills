@@ -6,7 +6,9 @@ SECTIONS
   0 is the sart address
   */
   .log 0 (INFO) : {
-    *(.log);
+    *(.log.error);
+    __log_warning_start__ = .;
+    *(.log.warn);
   }
 }
 
