@@ -1,5 +1,5 @@
 
-# USB to TTL seria driver for MacOS 
+# USB to TTL serial driver for MacOS 
 
 The required driver for this board is `CH9102F` but the driver in 
 `../usb2ttl_driver/CH341SER_MAC.ZIP` also includes this chip model.
