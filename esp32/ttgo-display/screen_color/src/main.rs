@@ -25,8 +25,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Bind the log crate to the ESP Logging facilities
     esp_idf_svc::log::EspLogger::initialize_default();
     log::set_max_level(log::LevelFilter::Debug);
-    log::info!("Starting display...");
-    log::info!("Timestamp: {}", chrono::Local::now());
+    log::info!("Starting display...v1");
 
     let peripherals = Peripherals::take()?;
 
