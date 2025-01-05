@@ -13,7 +13,7 @@ use esp_idf_svc::hal::spi::SPI2;
 use mipidsi::{models::ST7789, Builder};
 // Provides the required color type
 use embedded_graphics::prelude::RgbColor;
-use embedded_graphics::{pixelcolor::Rgb666, prelude::*};
+use embedded_graphics::{pixelcolor::Rgb565, prelude::*};
 
 use std::error::Error;
 use std::thread;
@@ -43,9 +43,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Initialize GPIO
     let rst = PinDriver::output(rst)?;
     let dc = PinDriver::output(dc)?;
-    //let mut cs = PinDriver::output(cs)?;
     let mut bl = PinDriver::output(bl)?;
-    // sdi aka MISO is not needed
     let sdi: Option<AnyIOPin> = None;
 
     // SpiDriver – Represents the raw SPI bus where
@@ -74,7 +72,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .unwrap();
 
     // Clear the display to red
-    display.clear(Rgb666::RED.into()).unwrap();
+    display.clear(Rgb565::RED.into()).unwrap();
 
     // back light on
     bl.set_high()?;
@@ -83,6 +81,17 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     loop {
         thread::sleep(Duration::from_secs(1));
+        display.clear(Rgb565::BLUE.into()).unwrap();
+
+        thread::sleep(Duration::from_secs(1));
+        display.clear(Rgb565::MAGENTA.into()).unwrap();
+
+        thread::sleep(Duration::from_secs(1));
+        display.clear(Rgb565::GREEN.into()).unwrap();
+
+        thread::sleep(Duration::from_secs(1));
+        display.clear(Rgb565::YELLOW.into()).unwrap();
+        log::info!("repeat");
     }
 
     //Ok(())
