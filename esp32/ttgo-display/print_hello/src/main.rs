@@ -8,7 +8,6 @@ fn main() {
     log::set_max_level(log::LevelFilter::Debug);
 
     log::info!("Hello, world!");
-    delay.delay(500.millis());
 
     println!("Start!!");
 }
