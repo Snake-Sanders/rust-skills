@@ -14,7 +14,10 @@ use mipidsi::{models::ST7789, Builder};
 // Provides the required color type
 use embedded_graphics::prelude::RgbColor;
 use embedded_graphics::{pixelcolor::Rgb666, prelude::*};
+
 use std::error::Error;
+use std::thread;
+use std::time::Duration;
 
 fn main() -> Result<(), Box<dyn Error>> {
     esp_idf_svc::sys::link_patches();
@@ -22,7 +25,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Bind the log crate to the ESP Logging facilities
     esp_idf_svc::log::EspLogger::initialize_default();
     log::set_max_level(log::LevelFilter::Debug);
-    log::info!("Demo color display");
+    log::info!("Starting display...");
+    log::info!("Timestamp: {}", chrono::Local::now());
 
     let peripherals = Peripherals::take()?;
 
@@ -76,5 +80,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     // back light on
     bl.set_high()?;
 
-    Ok(())
+    log::info!("Display initialized.");
+
+    loop {
+        thread::sleep(Duration::from_secs(1));
+    }
+
+    //Ok(())
 }

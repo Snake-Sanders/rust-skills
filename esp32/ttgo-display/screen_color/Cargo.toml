@@ -29,6 +29,7 @@ esp-idf-svc = { version = "0.49", features = ["critical-section", "embassy-time-
 display-interface-spi = "0.5"
 mipidsi = "0.8"
 embedded-graphics = "0.8"
+chrono= "0.4"
 
 [build-dependencies]
 embuild = "0.32.0"
