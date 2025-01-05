@@ -22,10 +22,10 @@ board with an integrated 1.14" TFT display (driven by the ST7789V controller).
 Features 
 
 - ESP32-D0WDQ6 (dual-core 240MHz processor)
-- Integrated 1.14" TFT LCD (`ST7789V`, SPI interface)
+- Integrated Display (`ST7789V`, SPI interface)
+  1.14" TFT LCD 135x240 IPS (pixels)
 - Two user buttons (can double as reset/boot).
 - USB-C for power and programming.
-
 ## SPI configuration
 
 |Pin|Function|Notes|
