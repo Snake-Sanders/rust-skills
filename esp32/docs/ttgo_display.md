@@ -26,4 +26,17 @@ Features
 - Two user buttons (can double as reset/boot).
 - USB-C for power and programming.
 
+## SPI configuration
 
+|Pin|Function|Notes|
+|MOSI|Master Out Slave In|Data sent from ESP32 to display|
+|SCLK|Serial Clock|Clock signal to synchronize communication|
+|CS|Chip Select|Selects the device (optional, can be tied low)|
+|DC|Data/Command|Selects between sending data or command|
+|RST|Reset|Resets the display|
+|BL|Backlight|Controls the screen backlight|
+
+For SPI, you need to define:
+
+- SPI Bus (MOSI, SCLK)
+- Control Pins (DC, RST, BL)
