@@ -18,6 +18,7 @@ use esp_idf_svc::hal::spi::SpiDriverConfig;
 use esp_idf_svc::hal::spi::SPI2;
 use esp_idf_svc::hal::units::Hertz;
 
+use mipidsi::options::ColorInversion;
 use mipidsi::{models::ST7789, Builder};
 
 use std::error::Error;
@@ -88,6 +89,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Create the ILI9486 display driver from the display interface and optional RST pin
     let mut display = Builder::new(ST7789, di)
+        .invert_colors(ColorInversion::Inverted)
+        //.display_size(240 as u16, 135 as u16)
         .reset_pin(rst)
         .init(&mut delay)
         .unwrap();
