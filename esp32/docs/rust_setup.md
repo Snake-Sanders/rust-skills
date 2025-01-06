@@ -39,16 +39,31 @@ See other methods for setting the environment in:
 
 https://esp-rs.github.io/book/installation/riscv-and-xtensa.html#3-set-up-the-environment-variables
 
-## Example
-
-```sh
-cargo generate https://github.com/esp-rs/esp-idf-template cargo
-```
+## Crates 
 
 Repositories naming convetions
 
 - `esp-*` are focused on `no_std` approach
 - `esp-idf-*` are focused on `std` approach
+
+`esp-idf-sys` access to drivers, Wi-Fi, etc.
+`embedded-svc` abstraction for embedded services (WiFi, Network, Httpd, Logging, etc.).
+`esp-idf-hal` implementation of the `embedded-hal`. 
+`esp-idf-svc` implementation of `embedded-svc`.
+
+Stack
+
+1. `esp-idf-svc` (calls all below)
+2. `esp-idf-hal` (calls all below)
+3. `esp-idf-sys` & `embedded-svc`
+
+[reference](https://docs.esp-rs.org/book/overview/using-the-standard-library.html#relevant-esp-rs-crates)
+
+## Example
+
+```sh
+cargo generate https://github.com/esp-rs/esp-idf-template cargo
+```
 
 if the command `cargo run` does not work, 
 try build and communicate manually.
