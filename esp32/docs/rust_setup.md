@@ -51,13 +51,20 @@ Repositories naming convetions
 `esp-idf-hal` implementation of the `embedded-hal`. 
 `esp-idf-svc` implementation of `embedded-svc`.
 
-Stack
+### Stack
 
 1. `esp-idf-svc` (calls all below)
 2. `esp-idf-hal` (calls all below)
 3. `esp-idf-sys` & `embedded-svc`
 
 [reference](https://docs.esp-rs.org/book/overview/using-the-standard-library.html#relevant-esp-rs-crates)
+
+### Graphic library
+
+[embedded-graphics] (https://github.com/embedded-graphics/embedded-graphics)
+[mipidsi](https://github.com/almindor/mipidsi)
+See [Troubleshooting](https://github.com/almindor/mipidsi/blob/master/docs/TROUBLESHOOTING.md) 
+wrong color and inversion
 
 ## Example
 
