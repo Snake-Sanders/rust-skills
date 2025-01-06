@@ -4,6 +4,8 @@ use esp_idf_svc::hal::delay::Ets;
 use esp_idf_svc::hal::gpio::AnyIOPin;
 use esp_idf_svc::hal::gpio::PinDriver;
 use esp_idf_svc::hal::peripherals::Peripherals;
+use esp_idf_svc::hal::spi::config::DriverConfig;
+use esp_idf_svc::hal::spi::Dma;
 use esp_idf_svc::hal::spi::SpiConfig;
 use esp_idf_svc::hal::spi::SpiDeviceDriver;
 use esp_idf_svc::hal::spi::SpiDriver;
@@ -46,6 +48,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut bl = PinDriver::output(bl)?;
     let sdi: Option<AnyIOPin> = None;
 
+    // to avoid swipe effect update the SPI frequency
+    // 40000000
+    // - `240 * 135` – Total number of pixels.
+    // - `* 2` – Two bytes per pixel (RGB565).
+    // - `+ 8` – Extra space for DMA alignment or control data.
+    let dma = Dma::Auto(240 * 135 * 2 + 8);
+
     // SpiDriver – Represents the raw SPI bus where
     // one SpiDriver per SPI bus, this handles many SPI devices
     // connected to this bus.
@@ -55,7 +64,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         sclk,
         sdo,
         sdi, // no MISO
-        &SpiDriverConfig::default(),
+        &DriverConfig::default().dma(dma),
     )?;
 
     // SpiDeviceDriver - A higher-level abstraction representing
