@@ -32,4 +32,20 @@ setup file for ESP32 and TTGO T-Display ST7789V SPI bus TFT
 //...
 ```
 
+## Linux Mint
+
+On linux mint might complain about it can't  `import serial`
+
+`pip install pyserial`
+
+also there might be an `gpio` compile error
+
+Find the libraries `~/Arduino/libraries/TFT_eSPI/`.
+Then add to `processors/TFT_eSPI_ESP32.h` the following
+
+```c
+// add these after the processor specific header
+#include "driver/gpio.h"
+#include <rom/ets_sys.h>
+```
 
