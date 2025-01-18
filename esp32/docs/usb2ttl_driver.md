@@ -63,15 +63,28 @@ Check if the driver is loaded
 systemextensionsctl list | grep -i ch34
 *       *       5JZGQTGU4W      cn.wch.CH34xVCPDriver (1.0/1)   cn.wch.CH34xVCPDriver   [activated enabled]
 ```
+At this point the driver might be activated but not shown in /dev/ 
+
+` ls -l /dev/tty.* /dev/cu.*`
+
+In this case try to change the usb cable. Before I just used a regular USB-C cable
+to connect directly to ESP-32 UBS port, now I need a converter in between.
+
+`ESP-32 (USB-C) -> USB-A -> USB-C -> MacBook`
+
+See the comments on this issue.
+
+https://github.com/espressif/arduino-esp32/issues/1084
 
 ### As Kernel extensions (kexts) Previous MacOS versions
 
 verify if the driver is installed
 
 `ls -l /Library/Extensions/ | grep -i ch34`
-or 
-`ls -l /System/Library/Extensions/ | grep -i ch34`
 
+or 
+
+`ls -l /System/Library/Extensions/ | grep -i ch34`
 
 Check if the driver is loaded
 
