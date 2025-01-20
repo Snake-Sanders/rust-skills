@@ -1,0 +1,11 @@
+[package]
+name = "rp2040_promicro"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sparkfun-pro-micro-rp2040 = "0.8.0"
+embedded-hal = "0.2.0"
+cortex-m-rt = "0.7.5"
+cortex-m = "0.7.7"
+panic-halt = "1.0.0"
