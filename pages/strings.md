@@ -1,6 +1,15 @@
 
 ## String manipulation
 
+- [String manipulation](#string-manipulation)
+  - [summary](#summary)
+  - [String Concatenation](#string-concatenation)
+  - [String indexing](#string-indexing)
+  - [String slice](#string-slice)
+  - [Finding \& Replacing](#finding--replacing)
+
+### summary 
+
 | Operation                 | Example                                       |
 |---------------------------|-----------------------------------------------|
 | Create String             | String::from("Rust"), "text".to_string()      |
@@ -121,4 +130,3 @@ fn main() {
     }
 }
 ```
-

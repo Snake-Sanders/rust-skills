@@ -3,6 +3,13 @@
 
 > https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
 
+- [Common Exceptions \& Pitfalls](#common-exceptions--pitfalls)
+  - [Temporary Scope of Mutable References](#temporary-scope-of-mutable-references)
+  - [Returning References from Functions](#returning-references-from-functions)
+  - [Interior Mutability (Cell and RefCell)](#interior-mutability-cell-and-refcell)
+  - [RefCell – Borrow Checking at Runtime](#refcell--borrow-checking-at-runtime)
+  - [Mutex– Thread-Safe Interior Mutability](#mutex-thread-safe-interior-mutability)
+  - [RwLock – Optimized for Reads](#rwlock--optimized-for-reads)
 
 ### Ownership Rules
 
@@ -260,4 +267,3 @@ fn main() {
     println!("Updated value: {:?}", data.read().unwrap());
 }
 ```
-
