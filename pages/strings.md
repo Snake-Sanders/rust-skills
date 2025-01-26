@@ -102,6 +102,22 @@ fn main() {
 }
 ```
 
+Chars will handle icons and spacial characters as it uses UTF-8
+
+Each ASCII character (R, u, s, t) is 1 byte.
+å and é are 2 bytes each.
+😊 is 4 bytes (Emoji take more space in UTF-8).
+Total: 4 + 2 + 2 + 4 = 12 bytes, but only 8 characters.
+
+```rust
+fn main() {
+    let s = "Rust åé😊";
+
+    println!("Characters count: {}", s.chars().count()); // 8 (graphemes)
+    println!("Bytes count: {}", s.len()); // 12 (UTF-8 bytes)
+}
+```
+
 ### String slice
 
 Use slicing (&s[start..end]) instead of substring functions.
@@ -128,5 +144,77 @@ fn main() {
     if s.contains("Rust") {
         println!("Found Rust!");
     }
+}
+```
+
+### Find index
+
+```rust
+fn main() {
+    let s = String::from("Rust programming");
+
+    match s.find("gram") {
+        Some(index) => println!("Found at index {}", index),
+        None => println!("Not found"),
+    }
+}
+```
+
+### Find and replace
+
+```rust
+fn main() {
+    let s = String::from("I love Rust!");
+    let new_s = s.replace("love", "adore");
+
+    println!("{}", new_s); // Output: "I adore Rust!"
+}
+```
+### Split
+
+```rust
+fn main() {
+    let s = String::from("Learn Rust step by step");
+   
+    // also there is `s.split_whitespace`
+    for word in s.split(' ') {
+        println!("{}", word);
+    }
+}
+```
+
+### Conversion to/from number
+
+```rust
+fn main() {
+    let number = 42;
+    let s = number.to_string(); // "42"
+
+    println!("{}", s);
+
+    let str_number = "123";
+    let n: i32 = str_number.parse().unwrap(); // Converts to i32
+
+    println!("{}", n);
+}
+```
+
+### String strim
+
+```rust
+fn main() {
+    let s = "   Rust   ".trim(); // Removes leading/trailing spaces
+    println!("'{}'", s);
+}
+```
+
+### case
+
+```rust
+fn main() {
+    let s = "Rust Programming";
+    
+    println!("{}", s.to_uppercase()); // "RUST PROGRAMMING"
+    println!("{}", s.to_lowercase()); // "rust programming"
 }
 ```
