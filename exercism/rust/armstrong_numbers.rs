@@ -1,3 +1,7 @@
+// compile and run:
+// rustc armstrong_numbers.rs
+// ./armstrong_numbers
+
 fn main() {
     let number: u32 = 153;
     if is_armstrong_number(number) {
