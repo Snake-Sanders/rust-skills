@@ -121,3 +121,72 @@ match temp {
     _ => println!("Moderate temperature"),
 }
 ```
+
+
+## Practical Examples
+
+```rust  
+// 1. Basic value return from match
+fn process_number(x: i32) -> i32 {
+    let result = match x {
+        n if n < 0 => -n,    // Make positive
+        n => n              // Keep as is
+    };
+    
+    // Continue using result
+    result * 2
+}
+```
+
+## With Option type
+
+```rust
+fn transform_option(opt: Option<i32>) -> Option<String> {
+    let processed = match opt {
+        Some(n) if n < 0 => Some(-n),
+        Some(n) => Some(n + 1),
+        None => None,
+    };
+
+    // Continue processing the result
+    processed.map(|n| format!("Number: {}", n))
+}
+```
+
+## Complex example with multiple types
+
+```rust
+enum Status {
+    Active(i32),
+    Inactive,
+}
+
+fn process_status(status: Status) -> String {
+    let value = match status {
+        Status::Active(n) => Some(n * 2),
+        Status::Inactive => None,
+    };
+
+    // Continue processing the result
+    match value {
+        Some(n) => format!("Processed: {}", n),
+        None => "No value".to_string(),
+    }
+}
+```
+
+```rust     
+// 4. Using let to bind and continue processing
+fn process_coordinates(point: Option<(i32, i32)>) -> Option<f64> {
+    let transformed = match point {
+        Some((x, y)) if x >= 0 && y >= 0 => Some((x * 2, y * 2)),
+        Some((x, y)) => Some((-x, -y)),
+        None => None,
+    };
+
+    // Continue with the transformed value
+    transformed.map(|(x, y)| {
+        ((x.pow(2) + y.pow(2)) as f64).sqrt()
+    })
+}
+```     
