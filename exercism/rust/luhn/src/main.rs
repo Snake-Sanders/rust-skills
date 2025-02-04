@@ -49,6 +49,26 @@ fn main() {
 }
 
 #[test]
+fn enumerate_test() {
+    let mut iter = "789".chars().enumerate();
+
+    assert_eq!(iter.next(), Some((0, '7')));
+    assert_eq!(iter.next(), Some((1, '8')));
+    assert_eq!(iter.next(), Some((2, '9')));
+    assert_eq!(iter.next(), None);
+}
+
+#[test]
+fn chars_iterator_test() {
+    let mut chars = "123".chars();
+
+    assert_eq!(chars.next(), Some('1'));
+    assert_eq!(chars.next(), Some('2'));
+    assert_eq!(chars.next(), Some('3'));
+    assert_eq!(chars.last(), None);
+}
+
+#[test]
 fn double_with_overflow_test() {
     assert_eq!(double_with_overflow(0), 0);
     assert_eq!(double_with_overflow(1), 2);
