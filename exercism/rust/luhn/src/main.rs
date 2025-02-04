@@ -1,30 +1,33 @@
 /// Check a Luhn checksum.
 pub fn is_valid(code: &str) -> bool {
-    let mut is_valid: bool = false;
-    let number = code.replace(" ", "");
+    println!("input: {}", code);
 
-    println!("{} <- evaluating ", code);
+    let mut is_valid = true;
+    let numbers = code
+        .replace(" ", "")
+        .chars()
+        .rev()
+        .enumerate()
+        .map(|(i, c)| match c.to_digit(10) {
+            Some(d) if (i % 2 != 0) => double_with_overflow(d),
+            Some(d) => d,
+            None => {
+                // not a digit
+                is_valid = false;
+                0
+            }
+        })
+        .collect::<Vec<u32>>();
 
-    if number.len() > 1 {
-        let res: u32 = number
-            .chars()
-            .enumerate()
-            .map(|(i, c)| {
-                let d = match c.to_digit(10) {
-                    Some(d) if (i % 2 == 0) => double_with_overflow(d),
-                    Some(d) => d,
-                    None => panic!(),
-                };
+    if is_valid {
+        is_valid = numbers.len() > 1;
+    }
 
-                print!("{}", d);
-                d
-            })
-            .collect::<Vec<u32>>()
-            .into_iter()
-            .sum();
-
-        is_valid = res % 10 == 0;
-        println!("\nresult: {}, valid: {}", res, is_valid);
+    if is_valid {
+        println!("\ndoubles: {:?}", numbers);
+        let sum: u32 = numbers.into_iter().sum();
+        let is_valid = sum % 10 == 0;
+        println!("sum: {}, valid: {}\n", sum, is_valid);
     }
 
     is_valid
@@ -44,8 +47,14 @@ fn main() {
     println!("059 {}", is_valid("059"));
     //println!("empty {}", is_valid(""));
     //println!("one {}", is_valid("1"));
-    //println!("code valid {}", is_valid("4539 3195 0343 6467"));
+    println!("code valid {}", is_valid("4539 3195 0343 6467"));
     println!("code invalid {}", is_valid("8273 1232 7352 0569"));
+}
+#[test]
+fn range_test() {
+    let digits = ['1', '2', '3'];
+    assert!(digits.contains(&'1'));
+    assert!(!digits.contains(&'4'));
 }
 
 #[test]
