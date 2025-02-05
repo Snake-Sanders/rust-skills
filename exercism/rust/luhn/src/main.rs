@@ -1,7 +1,5 @@
 /// Check a Luhn checksum.
 pub fn is_valid(code: &str) -> bool {
-    println!("input: {}", code);
-
     let mut is_valid = true;
     let numbers = code
         .replace(" ", "")
@@ -19,15 +17,11 @@ pub fn is_valid(code: &str) -> bool {
         })
         .collect::<Vec<u32>>();
 
-    if is_valid {
-        is_valid = numbers.len() > 1;
-    }
+    is_valid = is_valid && numbers.len() > 1;
 
     if is_valid {
-        println!("\ndoubles: {:?}", numbers);
         let sum: u32 = numbers.into_iter().sum();
-        let is_valid = sum % 10 == 0;
-        println!("sum: {}, valid: {}\n", sum, is_valid);
+        is_valid = sum % 10 == 0;
     }
 
     is_valid
@@ -85,4 +79,33 @@ fn double_with_overflow_test() {
     assert_eq!(double_with_overflow(5), 1);
     assert_eq!(double_with_overflow(6), 3);
     assert_eq!(double_with_overflow(9), 9);
+}
+
+#[test]
+fn single_digit_strings_can_not_be_valid() {
+    assert!(!is_valid("1"));
+}
+
+#[test]
+//#[ignore]
+fn a_single_zero_is_invalid() {
+    assert!(!is_valid("0"));
+}
+
+#[test]
+//#[ignore]
+fn a_simple_valid_sin_that_remains_valid_if_reversed() {
+    assert!(is_valid("059"));
+}
+
+#[test]
+//#[ignore]
+fn a_simple_valid_sin_that_becomes_invalid_if_reversed() {
+    assert!(is_valid("59"));
+}
+
+#[test]
+//#[ignore]
+fn a_valid_canadian_sin() {
+    assert!(is_valid("055 444 285"));
 }
