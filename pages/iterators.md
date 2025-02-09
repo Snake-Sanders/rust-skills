@@ -70,6 +70,20 @@ let indexed: Vec<(usize, &str)> = words.iter()
     .enumerate()
     .collect();
 ```
+### Ranges
+
+```rust
+//(1 + 2 + ... + 10)² = 55² = 3025.
+pub fn square_of_sum(n: u32) -> u32 {
+    (1..=n).sum::<u32>().pow(2)
+}
+
+//1² + 2² + ... + 10² = 385.
+pub fn sum_of_squares(n: u32) -> u32 {
+    (1..=n).map(|s| s.pow(2)).sum()
+}
+
+```
 
 ### Common Patterns 
 
