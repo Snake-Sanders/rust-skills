@@ -35,3 +35,25 @@ for key in map.keys() {
 // the result is unsorted!
 // b a c
 ```
+
+## Iterating over a Map (Copy)
+
+This will create a copy with the changes without modifying the original map.
+
+```rust
+let new_map: HashMap<_, _> = map.into_iter()
+    .map(|(k, v)| (k, v * 2))
+    .collect();
+```
+
+## Iterating over a Map (mut)
+
+This will apply the changes directly on the original map.
+
+- `.iter_mut()` gives you mutable references to the values.
+- `.for_each()` is like Elixir’s .map, but for side effects (not for returning
+a new collection).
+
+```rust
+map.iter_mut().for_each(|(_k, v)| *v *= 2);
+```
