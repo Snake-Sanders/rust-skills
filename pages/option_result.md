@@ -1,3 +1,47 @@
+## Option<T>
+
+Used when a value might be present or absent.
+
+Has two variants:
+
+- Some(value) — value is present.
+- None — value is absent.
+
+Example:
+
+```rust
+fn get_first_char(s: &str) -> Option<char> {
+    s.chars().next()
+}
+
+// Usage:
+let result = get_first_char("hello"); // Some('h')
+let result = get_first_char("");      // None
+```
+
+## Result<T,E>
+
+Used for functions that can succeed (Ok) or fail (Err).
+
+Has two variants:
+
+- Ok(value) — operation succeeded, value is present.
+- Err(error) — operation failed, error info is present.
+
+```rust
+fn divide(a: i32, b: i32) -> Result<i32, &'static str> {
+    if b == 0 {
+        Err("division by zero")
+    } else {
+        Ok(a / b)
+    }
+}
+
+// Usage:
+let result = divide(10, 2); // Ok(5)
+let result = divide(10, 0); // Err("division by zero")
+```
+
 ## Option Some and None
 
 ```rust
@@ -36,7 +80,6 @@ let value = none.unwrap_or_else(|| {
 });
 ```
 
-
 ## Safe Value Extraction
 
 ```rust
@@ -58,7 +101,6 @@ let result = opt
 // filter - keep Some if condition is true
 let filtered = opt.filter(|x| x % 2 == 0); // None (5 is not even)
 ```
-
 
 ## Combining Options
 
@@ -104,7 +146,6 @@ match number {
 }
 ```
 
-
 ## Collecting and Converting
 
 ```rust
@@ -123,7 +164,7 @@ let flattened = nested.flatten(); // Some(5)
 
 ## Error Handling Patterns
 
-```rust 
+```rust
 fn divide(numerator: i32, denominator: i32) -> Option<i32> {
     if denominator == 0 {
         None
@@ -146,7 +187,7 @@ fn compute_average(nums: Vec<i32>) -> Option<f64> {
 
 ## Practical Examples
 
-```rust 
+```rust
 struct User {
     id: i32,
     name: String,
