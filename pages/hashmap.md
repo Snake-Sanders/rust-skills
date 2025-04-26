@@ -17,3 +17,21 @@ Adding values to a map
     logger.insert("duplicated", 7);
     logger.insert("invalid", 1);
 ```
+
+Get the map keys
+
+```rust
+use std::collections::HashMap;
+
+let map = HashMap::from([
+    ("a", 1),
+    ("b", 2),
+    ("c", 3),
+]);
+
+for key in map.keys() {
+    print!("{key} ");
+}
+// the result is unsorted!
+// b a c
+```
