@@ -1,4 +1,4 @@
-## Iterators 
+## Iterators
 
 The iter() method is part of Rust's iterator system. Let me break this down:
 
@@ -22,7 +22,7 @@ string.chars()    // Creates iterator over chars
 string.bytes()    // Creates iterator over bytes
 ```
 
-### Common Iterator patterns 
+### Common Iterator patterns
 
 ```rust
 let vec = vec![1, 2, 3, 4, 5];
@@ -46,7 +46,7 @@ for x in vec.into_iter() {
 
 ### Enumerate()
 
-enumerate() is an iterator adaptor that wraps an iterator and yields pairs of (index, value). 
+enumerate() is an iterator adaptor that wraps an iterator and yields pairs of (index, value).
 
 ```rust
 let string = String::from("hello");
@@ -70,6 +70,7 @@ let indexed: Vec<(usize, &str)> = words.iter()
     .enumerate()
     .collect();
 ```
+
 ### Ranges
 
 ```rust
@@ -85,7 +86,7 @@ pub fn sum_of_squares(n: u32) -> u32 {
 
 ```
 
-### Common Patterns 
+### Common Patterns
 
 ```rust
 let chars = vec!['a', 'b', 'c'];
@@ -130,6 +131,15 @@ for (i, result) in results.iter().enumerate() {
     match result {
         Ok(val) => println!("Success at {}: {}", i, val),
         Err(e) => println!("Error at {}: {}", i, e),
+    }
+}
+```
+
+```rust
+fn is_valid(dna: &str) -> bool {
+    match dna {
+        "" => true,
+        dna => dna.find(['A', 'C', 'G', 'T']).is_some(),
     }
 }
 ```
