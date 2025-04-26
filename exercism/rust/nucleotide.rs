@@ -15,13 +15,19 @@ pub fn count(nucleotide: char, dna: &str) -> Result<usize, char> {
 }
 
 pub fn nucleotide_counts(dna: &str) -> Result<HashMap<char, usize>, char> {
-    let mut counts: HashMap<char, usize> = HashMap::from([('A', 0), ('C', 0), ('G', 0), ('T', 0)]);
+    match find_invalid_sequence(dna) {
+        Some(n) => Err(n),
+        None => {
+            let mut counts: HashMap<char, usize> =
+                HashMap::from([('A', 0), ('C', 0), ('G', 0), ('T', 0)]);
 
-    counts
-        .iter_mut()
-        .for_each(|(k, v)| *v = count_chars(*k, dna));
+            counts
+                .iter_mut()
+                .for_each(|(k, v)| *v = count_chars(*k, dna));
 
-    Ok(counts)
+            Ok(counts)
+        }
+    }
 }
 
 fn count_chars(letter: char, string: &str) -> usize {
@@ -42,3 +48,4 @@ fn find_invalid_sequence(dna: &str) -> Option<char> {
         Some(idx) => dna.chars().nth(idx),
     }
 }
+
