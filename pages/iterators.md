@@ -46,7 +46,8 @@ for x in vec.into_iter() {
 
 ### Enumerate()
 
-enumerate() is an iterator adaptor that wraps an iterator and yields pairs of (index, value).
+enumerate() is an iterator adaptor that wraps an iterator and yields pairs of
+(index, value).
 
 ```rust
 let string = String::from("hello");

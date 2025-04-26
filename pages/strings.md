@@ -1,5 +1,7 @@
 
-## String manipulation
+# String
+
+String manipulation
 
 - [String manipulation](#string-manipulation)
   - [summary](#summary)
@@ -8,7 +10,7 @@
   - [String slice](#string-slice)
   - [Finding \& Replacing](#finding--replacing)
 
-### summary 
+## summary
 
 | Operation                 | Example                                       |
 |---------------------------|-----------------------------------------------|
@@ -89,7 +91,6 @@ fn main() {
 }
 ```
 
-
 Iterate Over bytes
 
 ```rust
@@ -136,7 +137,6 @@ fn main() {
 
 ### Finding & Replacing
 
-
 ```rust
 fn main() {
     let s = String::from("Rust is awesome");
@@ -170,6 +170,7 @@ fn main() {
     println!("{}", new_s); // Output: "I adore Rust!"
 }
 ```
+
 ### Split
 
 ```rust
