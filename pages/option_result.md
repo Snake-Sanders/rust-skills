@@ -210,3 +210,13 @@ impl User {
     }
 }
 ```
+
+`Option<T>` is an enum that can be:
+
+- Some(value)
+- None
+
+```rust
+Some(2).map(|x| x + 1); // -> Some(3)
+None.map(|x| x + 1);    // -> None
+```
