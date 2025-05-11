@@ -185,6 +185,34 @@ fn compute_average(nums: Vec<i32>) -> Option<f64> {
 }
 ```
 
+## Early return with `?`
+
+```rust
+
+// using `?`
+fn get_initial(name: Option<&str>) -> Option<char> {
+    let name_str = name?;               // Returns None if name is None
+    let first_char = name_str.chars().next()?;  // Returns None if empty
+    Some(first_char)
+}
+
+// without using `?`
+fn get_initial(name: Option<&str>) -> Option<char> {
+    if let Some(name_str) = name {
+        if let Some(c) = name_str.chars().next() {
+            return Some(c);
+        }
+    }
+    None
+}
+
+fn main() {
+    println!("{:?}", get_initial(Some("Alice"))); // Some('A')
+    println!("{:?}", get_initial(Some("")));      // None
+    println!("{:?}", get_initial(None));          // None
+}
+```
+
 ## Practical Examples
 
 ```rust
