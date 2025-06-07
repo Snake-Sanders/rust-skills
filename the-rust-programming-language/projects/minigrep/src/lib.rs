@@ -26,3 +26,29 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
+    let mut result = vec![];
+
+    for line in content.lines() {
+        if line.find(query).is_some() {
+            result.push(line);
+        }
+    }
+
+    result 
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn one_result() {
+        let query = "duct";
+        let content = "\
+Rust:
+safe, fast, productive.
+Pick three.";
+        assert_eq!(vec!["safe, fast, productive."], search(query, content) );
+    }
+}
