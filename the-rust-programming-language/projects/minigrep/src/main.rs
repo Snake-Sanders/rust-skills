@@ -8,8 +8,13 @@ fn main() {
         println!("Bad arguments: {e}");
         process::exit(1);
     });
+
+    run(config);
+}
+
+fn run(config: Config) {
     let content = fs::read_to_string(config.file_path).expect("Ops, file  not found");
-    dbg!(content);
+    println!("With text: \n{content}");
 }
 
 struct Config {
