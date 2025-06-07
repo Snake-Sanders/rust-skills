@@ -1,4 +1,3 @@
-
 use std::error::Error;
 use std::fs;
 
@@ -30,15 +29,10 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
-    let mut result = vec![];
-
-    for line in content.lines() {
-        if line.find(query).is_some() {
-            result.push(line);
-        }
-    }
-
-    result 
+    content
+        .lines()
+        .filter(|line| line.contains(query))
+        .collect()
 }
 
 #[cfg(test)]
@@ -52,6 +46,6 @@ mod tests {
 Rust:
 safe, fast, productive.
 Pick three.";
-        assert_eq!(vec!["safe, fast, productive."], search(query, content) );
+        assert_eq!(vec!["safe, fast, productive."], search(query, content));
     }
 }
