@@ -1,3 +1,8 @@
+// run with:
+// cargo run -- search_word input_file
+// cargo run -- nobody poem.txt
+// IGNORE_CASE=1 cargo run -- To poem.txt
+
 use minigrep::Config;
 use std::env;
 use std::process;
