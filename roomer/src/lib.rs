@@ -1,14 +1,14 @@
-// use regex::Regex;
+use regex::Regex;
 use std::fs;
 
 #[derive(Debug, PartialEq)]
 struct Wall {
-    p1: u32,
-    p2: u32,
+    start: u32,
+    end: u32,
 }
 impl Wall {
     fn new() -> Wall {
-        Wall { p1: 0, p2: 0 }
+        Wall { start: 0, end: 0 }
     }
 }
 
@@ -23,7 +23,7 @@ impl Room {
     fn new() -> Room {
         Room {
             name: "".to_string(),
-            wall: Wall { p1: 0, p2: 0 },
+            wall: Wall { start: 0, end: 0 },
         }
     }
 }
@@ -65,45 +65,45 @@ fn parse_line(line: &str) -> Vec<Room> {
 
 // let re = Regex::new(r"\+-+\+").unwrap();
 fn find_horizontal_walls(line: &str) -> Vec<Wall> {
-    // let walls: Vec<Wall> = vec![];
-    let cols: Vec<_> = line.match_indices("+").map(|(i, _match)| i).collect();
+    let re = Regex::new(r"\.?\+-+\+").unwrap();
 
-    let walls: Vec<_> = line
-        .split("+")
-        .zip(cols)
-        .filter(|(in_beween, _col)| in_beween.chars().all(|c| c == '-'))
-        .map(|(bricks, col)| Wall {
-            p1: col as u32,
-            p2: (col + bricks.len()) as u32,
+    let walls: Vec<_> = re
+        .find_iter(line)
+        .map(|m| m.range())
+        .map(|range| Wall {
+            start: range.start as u32,
+            end: (range.end as u32) - 1,
         })
         .collect();
-
-    // let walls: Vec<_> = vec![Wall::new()];
     walls
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
-    fn find_one_start_h_wall() {
-        let content = "+--+-+";
+    fn find_invalid_start_h_wall() {
+        let content = " -+";
         let walls = find_horizontal_walls(content);
+        assert_eq!(0, walls.len());
 
-        assert_eq!(1, walls.len());
-        assert_eq!(Wall { p1: 0, p2: 2 }, walls[0]);
+        let content = " ++ ";
+        let walls = find_horizontal_walls(content);
+        assert_eq!(0, walls.len());
     }
-
-    // #[test]
-    // fn find_two_start_h_wall(){
-    //     let content = "+--+--";
-    //     let walls = find_horizontal_walls(content);
-    //
-    //     assert_eq!(2, walls.len());
-    //      assert_eq!(0, walls[0].p1 );
-    //     assert_eq!(8, walls[0].p2 );
-    //    assert_eq!(0, walls[1].p1 );
-    //     assert_eq!(8, walls[1].p2 );
-    // }
+    #[test]
+    fn find_two_valid_start_h_wall() {
+        let content = " +-+ +---+ ";
+        let walls = find_horizontal_walls(content);
+        assert_eq!(2, walls.len());
+        assert_eq!(Wall { start: 1, end: 3 }, walls[0]);
+        assert_eq!(Wall { start: 5, end: 9 }, walls[1]);
+    }
+    #[test]
+    fn find_one_valid_start_h_wall() {
+        let content = "+--+";
+        let walls = find_horizontal_walls(content);
+        assert_eq!(1, walls.len());
+        assert_eq!(Wall { start: 0, end: 3 }, walls[0]);
+    }
 }
