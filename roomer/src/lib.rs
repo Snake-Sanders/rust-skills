@@ -1,10 +1,15 @@
-use std::fs;
 // use regex::Regex;
+use std::fs;
 
 #[derive(Debug, PartialEq)]
 struct Wall {
     p1: u32,
     p2: u32,
+}
+impl Wall {
+    fn new() -> Wall {
+        Wall { p1: 0, p2: 0 }
+    }
 }
 
 #[derive(Debug)]
@@ -63,16 +68,17 @@ fn find_horizontal_walls(line: &str) -> Vec<Wall> {
     // let walls: Vec<Wall> = vec![];
     let cols: Vec<_> = line.match_indices("+").map(|(i, _match)| i).collect();
 
-    let walls: Vec<_> = cols
-        .into_iter()
-        .zip(line.split("+"))
-        .filter(|(_col, in_beween)| in_beween.chars().all(|c| c == '-'))
-        .map(|(col, bricks)| Wall {
+    let walls: Vec<_> = line
+        .split("+")
+        .zip(cols)
+        .filter(|(in_beween, _col)| in_beween.chars().all(|c| c == '-'))
+        .map(|(bricks, col)| Wall {
             p1: col as u32,
             p2: (col + bricks.len()) as u32,
         })
         .collect();
 
+    // let walls: Vec<_> = vec![Wall::new()];
     walls
 }
 
@@ -82,7 +88,7 @@ mod tests {
 
     #[test]
     fn find_one_start_h_wall() {
-        let content = "+--";
+        let content = "+--+-+";
         let walls = find_horizontal_walls(content);
 
         assert_eq!(1, walls.len());
