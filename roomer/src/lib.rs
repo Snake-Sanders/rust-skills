@@ -1,5 +1,11 @@
+use std::fs;
+
 pub fn run(file_path: String) -> (){
-    println!("Hello, world! ", );
-    dbg!(file_path);
-} 
+
+    let content = fs::read_to_string(file_path).unwrap();
+
+    for line in content.lines() {
+        println!("{}", line)
+    }
+}
 
