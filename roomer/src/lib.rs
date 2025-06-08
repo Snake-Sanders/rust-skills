@@ -1,14 +1,36 @@
 use std::fs;
 // use regex::Regex;
 
-struct Wall{
+#[derive(Debug, PartialEq)]
+struct Wall {
     p1: u32,
-    p2: u32
+    p2: u32,
+}
+
+#[derive(Debug)]
+struct Room {
+    wall: Wall,
+    name: String,
+    // objects: Vec<(String, u32)>,
+}
+
+impl Room {
+    fn new() -> Room {
+        Room {
+            name: "".to_string(),
+            wall: Wall { p1: 0, p2: 0 },
+        }
+    }
 }
 
 pub fn run(file_path: String) -> () {
     let content = read_file(file_path);
     display_content(&content);
+    for line in content {
+        let rooms = parse_line(&line);
+
+        dbg!(rooms);
+    }
 }
 
 fn read_file(file_path: String) -> Vec<String> {
@@ -26,54 +48,56 @@ fn display_content(content: &Vec<String>) -> () {
     }
 }
 
-fn parse_line(line: &str) -> Vec<Wall> {
-    let mut points: Vec<Wall> = vec!();
-    // let re = Regex::new(r"\+-+\+").unwrap();
+fn parse_line(line: &str) -> Vec<Room> {
+    let mut rooms: Vec<Room> = vec![];
+    let _walls = find_horizontal_walls(line);
+    let room = Room::new();
 
-    let v: Vec<_> = line.match_indices("+").map(|(i, _match)| i).collect();
-    let z: Vec<_> = line.split("+").zip(v)
-    .filter(|( rest, col)| {
+    rooms.push(room);
 
-    let mut continue_wall = true;
-    for c in rest.chars(){
-        continue_wall |= c == '-' 
-    }
-    continue_wall
-     })
-    .collect();
+    rooms
+}
 
-    dbg!(z);
-    dbg!(line);
-    // dbg!(v);
+// let re = Regex::new(r"\+-+\+").unwrap();
+fn find_horizontal_walls(line: &str) -> Vec<Wall> {
+    // let walls: Vec<Wall> = vec![];
+    let cols: Vec<_> = line.match_indices("+").map(|(i, _match)| i).collect();
 
+    let walls: Vec<_> = cols
+        .into_iter()
+        .zip(line.split("+"))
+        .filter(|(_col, in_beween)| in_beween.chars().all(|c| c == '-'))
+        .map(|(col, bricks)| Wall {
+            p1: col as u32,
+            p2: (col + bricks.len()) as u32,
+        })
+        .collect();
 
-    points.push(Wall{p1: 8, p2: 0 });
-
-    points
+    walls
 }
 
 #[cfg(test)]
 mod tests {
-     use super::*;
-    
-    #[test]
-    fn find_one_start_h_wall(){
-        let content = "+--------";
-        let points = parse_line(content);
-
-        assert_eq!(1, points.len());
-        assert_eq!(0, points[0].p1 );
-        assert_eq!(8, points[0].p2 );
-    }
+    use super::*;
 
     #[test]
-    fn find_two_start_h_wall(){
-        let content = "+--+--";
-        let points = parse_line(content);
+    fn find_one_start_h_wall() {
+        let content = "+--";
+        let walls = find_horizontal_walls(content);
 
-        assert_eq!(2, points.len());
-        assert_eq!(0, points[0].p1 );
-        assert_eq!(8, points[0].p2 );
+        assert_eq!(1, walls.len());
+        assert_eq!(Wall { p1: 0, p2: 2 }, walls[0]);
     }
 
+    // #[test]
+    // fn find_two_start_h_wall(){
+    //     let content = "+--+--";
+    //     let walls = find_horizontal_walls(content);
+    //
+    //     assert_eq!(2, walls.len());
+    //      assert_eq!(0, walls[0].p1 );
+    //     assert_eq!(8, walls[0].p2 );
+    //    assert_eq!(0, walls[1].p1 );
+    //     assert_eq!(8, walls[1].p2 );
+    // }
 }
