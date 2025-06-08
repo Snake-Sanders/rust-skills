@@ -1,10 +1,8 @@
 use std::fs;
 
 pub fn run(file_path: String) -> () {
-    let lines = read_file(file_path);
-    for line in lines {
-        println!("{}", line)
-    }
+    let content = read_file(file_path);
+    display_content(&content);
 }
 
 fn read_file(file_path: String) -> Vec<String> {
@@ -14,4 +12,9 @@ fn read_file(file_path: String) -> Vec<String> {
         res.push(line.to_string());
     }
     res
+}
+fn display_content(content: &Vec<String>) -> () {
+    for line in content {
+        println!("{}", line)
+    }
 }
