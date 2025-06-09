@@ -73,7 +73,7 @@ fn find_horizontal_walls(line: &str) -> Vec<Wall> {
         .find_iter(line)
         .map(|m| m.range())
         .map(|range| Wall {
-            start: range.start, 
+            start: range.start,
             end: ((range.end as u32) - 1) as usize,
         })
         .collect();
@@ -108,15 +108,45 @@ mod tests {
         let line = "  |   | |";
         let areas = find_open_areas(line);
         assert_eq!(2, areas.len());
-        assert_eq!(areas[0], Area{content: "|   ".to_string(), width: 2..6});
-        assert_eq!(areas[1], Area{content: "| ".to_string(), width: 6..8});
+        assert_eq!(
+            areas[0],
+            Area {
+                content: "|   ".to_string(),
+                width: 2..6
+            }
+        );
+        assert_eq!(
+            areas[1],
+            Area {
+                content: "| ".to_string(),
+                width: 6..8
+            }
+        );
 
         let line = " +--+  /  \\  +-- ";
         let areas = find_open_areas(line);
         assert_eq!(3, areas.len());
-        assert_eq!(areas[0], Area{content: "+  ".to_string(), width: 4..7});
-        assert_eq!(areas[1], Area{content: "/  ".to_string(), width: 7..10});
-        assert_eq!(areas[2], Area{content: "\\  ".to_string(), width: 10..13});
+        assert_eq!(
+            areas[0],
+            Area {
+                content: "+  ".to_string(),
+                width: 4..7
+            }
+        );
+        assert_eq!(
+            areas[1],
+            Area {
+                content: "/  ".to_string(),
+                width: 7..10
+            }
+        );
+        assert_eq!(
+            areas[2],
+            Area {
+                content: "\\  ".to_string(),
+                width: 10..13
+            }
+        );
     }
 
     #[test]
