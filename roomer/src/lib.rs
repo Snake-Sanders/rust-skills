@@ -4,13 +4,8 @@ use std::ops::Range;
 
 #[derive(Debug, PartialEq)]
 struct Wall {
-    start: u32,
-    end: u32,
-}
-impl Wall {
-    fn new() -> Wall {
-        Wall { start: 0, end: 0 }
-    }
+    start: usize,
+    end: usize,
 }
 
 #[derive(Debug, PartialEq)]
@@ -78,8 +73,8 @@ fn find_horizontal_walls(line: &str) -> Vec<Wall> {
         .find_iter(line)
         .map(|m| m.range())
         .map(|range| Wall {
-            start: range.start as u32,
-            end: (range.end as u32) - 1,
+            start: range.start, 
+            end: ((range.end as u32) - 1) as usize,
         })
         .collect();
     walls
@@ -92,8 +87,7 @@ fn find_open_areas(line: &str) -> Vec<Area> {
     let areas: Vec<_> = re
         .find_iter(line)
         .map(|m| {
-            let r = m.range();
-            let width = r.start..r.end ;
+            let width = m.range();
             let content = m.as_str().to_string();
 
             Area {
