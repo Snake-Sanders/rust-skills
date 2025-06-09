@@ -33,11 +33,14 @@ impl Room {
 pub fn run(file_path: String) -> () {
     let content = read_file(file_path);
     display_content(&content);
-    for line in content {
-        let rooms = parse_line(&line);
+    let mut rooms: Vec<Room> = vec![];
 
-        dbg!(rooms);
+    for line in content {
+        let (walls, areas) = parse_line(&line);
+        update_rooms(rooms, &walls, &areas);
     }
+
+    dbg!(rooms);
 }
 
 fn read_file(file_path: String) -> Vec<String> {
@@ -55,15 +58,11 @@ fn display_content(content: &Vec<String>) -> () {
     }
 }
 
-fn parse_line(line: &str) -> Vec<Room> {
-    let mut rooms: Vec<Room> = vec![];
-    let _walls = find_horizontal_walls(line);
-    let _areas = find_open_areas(line);
-    let room = Room::new();
-    dbg!(&room);
-    rooms.push(room);
+fn parse_line(line: &str) -> (Vec<Wall>, Vec<Area>) {
+    let walls = find_horizontal_walls(line);
+    let areas = find_open_areas(line);
 
-    rooms
+    (walls, areas)
 }
 
 fn find_horizontal_walls(line: &str) -> Vec<Wall> {
@@ -100,9 +99,33 @@ fn find_open_areas(line: &str) -> Vec<Area> {
     areas
 }
 
+fn update_rooms(rooms: Vec<Room>, walls: &Vec<Wall>, areas: &Vec<Area>) {
+    match walls.first() {
+        Some(wall) => 
+        {
+            rooms.push( Room {
+                wall: wall.clone(),
+                name: "".to_string(),
+            })
+        },
+        Nome => ()
+    }
+
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn new_h_walls_adds_new_room() {
+        let mut rooms: Vec<Room> = vec![];
+        let walls: Vec<Wall> = vec![];
+        let areas: Vec<Area> = vec![];
+        update_rooms(rooms, &walls, &areas);
+        assert_eq!(1, rooms.len());
+    }
+
     #[test]
     fn find_empty_multi_open_areas() {
         let line = "  |   | |";
