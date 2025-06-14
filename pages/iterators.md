@@ -144,3 +144,23 @@ fn is_valid(dna: &str) -> bool {
     }
 }
 ```
+
+### Collect
+
+This method behaves differently depending on the expected result variable type.
+
+```rust
+let input = "hello";
+
+// Collecting into Vec<char>
+let chars: Vec<char> = input.chars().collect();
+assert_eq!(chars, vec!['h', 'e', 'l', 'l', 'o']);
+
+// Collecting into String
+let string: String = input.chars().collect();
+assert_eq!(string, "hello");
+
+// Collecting into Vec<String> (each char as a String)
+let string_vec: Vec<String> = input.chars().map(|c| c.to_string()).collect();
+assert_eq!(string_vec, vec!["h", "e", "l", "l", "o"]);
+```
