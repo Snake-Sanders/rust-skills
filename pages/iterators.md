@@ -165,7 +165,7 @@ let string_vec: Vec<String> = input.chars().map(|c| c.to_string()).collect();
 assert_eq!(string_vec, vec!["h", "e", "l", "l", "o"]);
 ```
 
-Example of series of digits
+  Example of series of digits
 
 With `len=3` and `digigts=1234567` will return:
 `["123", "234", "345", "456", "567"]`
