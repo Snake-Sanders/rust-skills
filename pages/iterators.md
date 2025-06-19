@@ -178,3 +178,57 @@ With `len=3` and `digigts=1234567` will return:
         .map(|window| window.iter().collect::<String>())
         .collect()
 ```
+
+## How Rust Iterator Pipelines Work
+
+Rust's iterator pipeline (like .map(), .filter(), .collect()) is lazy and zero-copy by design. Here's how it works:
+
+1. Lazy Evaluation
+
+```rust
+let numbers = vec![1, 2, 3, 4, 5];
+let pipeline = numbers.iter()
+    .filter(|&x| x % 2 == 0)  // Not executed yet!
+    .map(|x| x * 2);          // Not executed yet!
+
+// Only when we call .collect() does the pipeline execute
+let result: Vec<i32> = pipeline.collect();
+```
+
+2. Zero-Copy by Default
+```rust
+let words = vec!["hello", "world", "rust"];
+let pipeline = words.iter()  // &str references, no copying
+    .filter(|&&word| word.len() > 3)  // Still &str references
+    .map(|&word| word.to_uppercase()); // Now we create new Strings
+```
+3. Example
+
+```rust
+phrase
+    .split(&['-', ' '])           // Returns &str slices (zero-copy)
+    .filter(|w| !w.is_empty())    // Still &str slices (zero-copy)
+    .map(|w| w.trim_matches('_')) // Still &str slices (zero-copy)
+    .map(|w| w.get(0..1).unwrap()) // Still &str slices (zero-copy)
+    .map(|w| w.to_uppercase().as_str()) // PROBLEM: creates String, then borrows
+    .flat_map(|w| {
+        // split words again to list
+    })
+    .collect()
+```    
+
+You can't always avoid Copying?
+
+1. String Transformations Require New Memory
+
+```rust
+// These operations MUST allocate new memory:
+"hello".to_uppercase()     // "HELLO" - new String
+"hello".to_string()        // new String
+"hello".replace("l", "x")  // new String
+
+// These operations can be zero-copy:
+"hello".trim()             // &str slice
+"hello".strip_prefix("he") // &str slice
+"hello".get(0..3)          // &str slice
+```
