@@ -35,6 +35,70 @@ fn m_height(matrix: &[Vec<u8>]) -> usize {
 }
 ```
 
+### Size Differences: Vec References vs Slices
+
+Understanding the memory layout differences is crucial for performance:
+
+#### Vec Reference (`&Vec<T>`)
+```rust
+// A Vec<T> contains three fields:
+struct Vec<T> {
+    ptr: *mut T,    // Pointer to heap-allocated data
+    len: usize,     // Number of elements
+    capacity: usize // Total allocated capacity
+}
+
+// So &Vec<T> is a pointer to this 24-byte structure (on 64-bit systems)
+// &Vec<T> = 8 bytes (pointer to Vec struct)
+```
+
+#### Slice Reference (`&[T]`)
+```rust
+// A slice is just a fat pointer containing:
+struct Slice<T> {
+    ptr: *const T, // Pointer to data
+    len: usize     // Number of elements
+}
+
+// So &[T] is 16 bytes (fat pointer with data pointer + length)
+// &[T] = 16 bytes (fat pointer)
+```
+
+#### Memory Layout Comparison
+
+```rust
+fn demonstrate_sizes() {
+    let vec = vec![1, 2, 3, 4, 5];
+    
+    // Vec reference - 8 bytes (pointer to Vec struct)
+    let vec_ref: &Vec<i32> = &vec;
+    
+    // Slice reference - 16 bytes (fat pointer)
+    let slice_ref: &[i32] = &vec;
+    
+    println!("Size of &Vec<i32>: {} bytes", std::mem::size_of_val(&vec_ref));
+    println!("Size of &[i32]: {} bytes", std::mem::size_of_val(&slice_ref));
+    
+    // The Vec itself is 24 bytes
+    println!("Size of Vec<i32>: {} bytes", std::mem::size_of_val(&vec));
+}
+```
+
+**Output:**
+```
+Size of &Vec<i32>: 8 bytes
+Size of &[i32]: 16 bytes
+Size of Vec<i32>: 24 bytes
+```
+
+#### Performance Implications
+
+1. **Function Calls**: Slice references are larger (16 bytes vs 8 bytes)
+2. **Memory Access**: Vec references require an extra indirection
+   - `&Vec<T>`: Reference → Vec struct → data pointer → data
+   - `&[T]`: Reference → data (direct)
+3. **Cache Efficiency**: Slices can be more cache-friendly due to direct data access
+
 ### Why Slices Are Better
 
 1. **More Flexible**: Slices can be created from `Vec`, arrays, or other slice types
