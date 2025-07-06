@@ -248,3 +248,26 @@ impl User {
 Some(2).map(|x| x + 1); // -> Some(3)
 None.map(|x| x + 1);    // -> None
 ```
+
+## Copied
+
+Maps an `Option<&T>` to an `Option<T>` by copying the contents of the
+option.
+
+This is useful in cases when the result is an option with a reference value
+`Option<&T>`.
+
+Here `row.get(1)` will return `Some(&u32)`
+with clone `row.get(1).clone()` will return `Some(u32)`
+However, since we use `filter_map` this already deletes `None` items.
+
+```rust
+let matrix: Vec<Vec<u32>> = vec![vec![1, 2], vec![3, 4]];
+
+let result = 
+   matrix
+  .iter()
+  .filter_map(|row| row.get(1).copied())
+  .collect();
+
+```
